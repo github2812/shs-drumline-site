@@ -37,6 +37,8 @@
 html {
   scroll-behavior: smooth;
   scroll-padding-top: 90px;
+
+  background: var(--purple-deep);
 }
 
 html,
@@ -46,6 +48,8 @@ body {
   width: 100%;
   min-height: 100%;
   overflow-x: hidden;
+
+  background: var(--purple-deep);
 }
 
 * {
@@ -55,7 +59,7 @@ body {
 body {
   font-family: var(--body-font);
   color: var(--purple-dark);
-  background: var(--cream);
+  background: var(--purple-deep);
   line-height: 1.6;
 }
 
@@ -104,9 +108,11 @@ button {
 
   width: 100%;
 
-  padding: 0;
+  padding: env(safe-area-inset-top) 0 0;
 
   pointer-events: none;
+
+  background: var(--purple-deep);
 }
 
 .nav-inner {
@@ -254,7 +260,7 @@ button {
   display: flex;
   align-items: center;
 
-  overflow: hidden;
+  overflow: visible;
 
   color: white;
 
@@ -491,6 +497,15 @@ button {
   padding: 0;
 }
 
+.carousel-image {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
+}
+
 .image-placeholder {
   width: 100%;
   height: 100%;
@@ -606,52 +621,53 @@ button {
    WAVES
 ================================ */
 
-/* WAVES */
 .wave {
   position: absolute;
   left: 0;
-  bottom: -1px;
+  bottom: 0;
+  z-index: 4;
+
   width: 100%;
-  height: 145px;
-  overflow: hidden;
+  height: 150px;
+
+  overflow: visible;
   pointer-events: none;
-  transform: none;
+
+  transform: translateY(var(--wave-reveal-offset, 150px));
 }
 
 .wave svg {
   position: absolute;
   left: 50%;
   bottom: 0;
-  width: max(1600px, 115vw);
-  min-width: 1600px;
+
+  width: 115%;
+  min-width: 1150px;
   height: 100%;
+
   transform: translateX(-50%);
   display: block;
   overflow: visible;
 }
 
-/* Every normal wave path should be the cream section color */
-.wave path {
-  fill: var(--cream);
-}
-
-/* The decorative back wave in the hero */
-.wave-back {
-  fill: rgba(255, 255, 255, 0.12) !important;
-
-  transform: translate3d(
-    var(--wave-back-offset, 0px),
-    0,
-    0
-  );
-
+.wave-layer {
   will-change: transform;
 }
 
-/* Front wave stays still */
+.wave-deep {
+  fill: rgba(255, 255, 255, 0.08) !important;
+}
+
+.wave-back {
+  fill: #e8e0ef !important;
+}
+
+.wave-mid {
+  fill: #f1ebf5 !important;
+}
+
 .wave-front {
   fill: var(--cream) !important;
-  transform: translate3d(0, 0, 0);
 }
 
 /* Prevent oversized decorative SVGs from creating horizontal scrolling */
@@ -663,7 +679,7 @@ body {
 @supports not (overflow-x: clip) {
   html,
   body {
-    overflow-x: clip;
+    overflow-x: hidden;
   }
 }
 
@@ -696,7 +712,7 @@ body {
 }
 
 .section-heading h2,
-.donate-text h2 {
+.donate-heading h2 {
   margin: 0;
 
   color: var(--purple-title);
@@ -724,21 +740,31 @@ body {
 .donate-section {
   background: var(--cream);
 
-  padding-top: 100px;
-  padding-bottom: 170px;
+  padding-top: 112px;
+  padding-bottom: 56px;
+}
+
+.donate-heading {
+  margin: 0 0 45px;
+
+  text-align: center;
 }
 
 .donate-layout {
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-  align-items: center;
+  grid-template-columns: 0.72fr 1.28fr;
+  align-items: stretch;
 
-  gap: 80px;
+  gap: 56px;
 }
 
 .video-card {
   position: relative;
 
+  width: 100%;
+  max-width: 520px;
+  aspect-ratio: 16 / 9;
+  align-self: start;
   overflow: hidden;
 
   border-radius: var(--radius-lg);
@@ -750,10 +776,19 @@ body {
   display: block;
 
   position: relative;
+
+  width: 100%;
+  height: 100%;
 }
 
 .video-placeholder {
-  aspect-ratio: 16 / 10;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 
   overflow: hidden;
 
@@ -812,17 +847,49 @@ body {
     0 16px 45px rgba(81, 53, 117, 0.42);
 }
 
-.donate-text h2 {
-  margin-bottom: 24px;
+.donate-text {
+  display: flex;
+  align-items: center;
 }
 
-.donate-text > p {
-  margin: 0 0 32px;
+.donate-copy {
+  width: 100%;
+}
+
+.donate-copy > p {
+  margin: 0 0 22px;
 
   color: var(--text-muted);
 
   font-size: 16px;
   line-height: 1.8;
+}
+
+.donate-copy > p:last-child {
+  margin-bottom: 0;
+}
+
+.donate-action {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  margin-top: 34px;
+  padding-bottom: 0;
+
+  text-align: center;
+}
+
+.donate-closing {
+  max-width: 760px;
+
+  margin: 0;
+
+  color: var(--text-muted);
+
+  font-size: 16px;
+  line-height: 1.75;
+  font-weight: 600;
 }
 
 .gold-button {
@@ -831,6 +898,8 @@ body {
   justify-content: center;
 
   min-width: 130px;
+
+  margin-top: 18px;
 
   padding: 13px 24px;
 
@@ -868,6 +937,7 @@ body {
 .staff-section {
   background: var(--cream);
 
+  padding-top: 56px;
   padding-bottom: 140px;
 }
 
@@ -908,6 +978,15 @@ body {
 
 .staff-image .image-placeholder {
   border: 0;
+}
+
+.staff-photo {
+  width: 100%;
+  height: 100%;
+
+  display: block;
+
+  object-fit: cover;
 }
 
 .staff-info {
@@ -1042,6 +1121,7 @@ body {
 @media (max-width: 900px) {
   .hero {
     min-height: 100vh;
+    min-height: 100svh;
     overflow: visible;
   }
 
@@ -1056,6 +1136,12 @@ body {
   .photo-carousel {
     order: 1;
     width: min(700px, 100%);
+    margin: 0 auto;
+  }
+
+  .video-card {
+    width: min(700px, 100%);
+    max-width: 700px;
     margin: 0 auto;
   }
 
@@ -1082,11 +1168,34 @@ body {
 
   .donate-layout {
     grid-template-columns: 1fr;
-    gap: 50px;
+    gap: 40px;
   }
 
   .donate-text {
     text-align: center;
+  }
+
+  .donate-heading {
+    margin-bottom: 40px;
+  }
+
+  .video-card {
+    width: min(700px, 100%);
+    max-width: 700px;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
+  }
+
+  .donate-copy {
+    width: 100%;
+  }
+
+  .donate-action {
+    margin-top: 36px;
+  }
+
+  .staff-section {
+    padding-top: 56px;
   }
 
   .staff-grid {
@@ -1105,7 +1214,7 @@ body {
   }
 
   .navbar {
-    padding: 0;
+    padding: env(safe-area-inset-top) 0 0;
   }
 
   .nav-inner {
@@ -1135,9 +1244,9 @@ body {
 
   .hero-content {
     width: min(100% - 32px, 1180px);
-    padding-top: 115px;
-    padding-bottom: 120px;
-    gap: 35px;
+    padding-top: calc(72px + env(safe-area-inset-top));
+    padding-bottom: 85px;
+    gap: 22px;
   }
 
   .hero-text {
@@ -1146,7 +1255,7 @@ body {
   }
 
   .hero h1 {
-    font-size: clamp(3.5rem, 16vw, 5.5rem);
+    font-size: clamp(3.2rem, 15vw, 5.2rem);
     max-width: 100%;
   }
 
@@ -1155,29 +1264,81 @@ body {
   }
 
   .photo-carousel {
-    padding: 5px;
+    width: min(74vw, 300px);
+    padding: 0;
+    margin: 0 auto;
+  }
+
+  .video-card {
+    width: min(74vw, 300px);
+    max-width: 300px;
+    aspect-ratio: 16 / 9;
+    margin: 0 auto;
   }
 
   .carousel-window {
-    border-radius: 22px;
+    border-radius: 20px;
+  }
+
+  .carousel-controls {
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .carousel-arrow {
+    width: 38px;
+    height: 38px;
+    font-size: 15px;
   }
 
   .wave {
     height: 95px;
-    bottom: -95px;
+    transform: translateY(var(--wave-reveal-offset, 95px));
+  }
+
+  .wave svg {
+    width: 170%;
+    min-width: 0;
+  }
+
+  .wave-mid,
+  .wave-front {
+    display: none;
   }
 
   .section {
-    padding: 85px 18px;
+    padding: 72px 18px;
   }
 
-  .donate-section,
-  .students-section {
-    padding-bottom: 120px;
+  .donate-section {
+    padding-top: 96px;
+    padding-bottom: 52px;
+  }
+
+  .donate-heading {
+    margin-bottom: 34px;
+  }
+
+  .donate-layout {
+    gap: 34px;
+  }
+
+  .donate-copy > p,
+  .donate-closing {
+    font-size: 15px;
+  }
+
+  .donate-action {
+    margin-top: 28px;
+  }
+
+  .staff-section {
+    padding-top: 44px;
+    padding-bottom: 90px;
   }
 
   .section-heading {
-    margin-bottom: 40px;
+    margin-bottom: 32px;
   }
 
   .instagram-links {
@@ -1185,7 +1346,36 @@ body {
   }
 
   .staff-grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .staff-card {
+    border-radius: 16px;
+  }
+
+  .staff-image {
+    aspect-ratio: 1 / 1;
+  }
+
+  .staff-info {
+    padding: 14px;
+  }
+
+  .staff-role {
+    margin-bottom: 5px;
+    font-size: 8px;
+    letter-spacing: 0.06em;
+  }
+
+  .staff-info h3 {
+    font-size: 18px;
+  }
+
+  .staff-description {
+    margin: 8px 0 0;
+    font-size: 12px;
+    line-height: 1.5;
   }
 
   .footer {
@@ -1211,6 +1401,10 @@ body {
   }
 
   .wave {
+    transform: none !important;
+  }
+
+  .wave-layer {
     transform: none !important;
   }
 }

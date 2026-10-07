@@ -1,12 +1,6 @@
-export const instagramBattery =
-  "https://www.instagram.com/YOUR_BATTERY_INSTAGRAM/";
-
-export const instagramFrontEnsemble =
-  "https://www.instagram.com/YOUR_FRONT_ENSEMBLE_INSTAGRAM/";
-
 export const donationUrl = "https://brandonaylor.com";
 export const fundraisingVideoUrl = "https://www.youtube.com/";
-export const contactEmail = "mailto:YOUR-EMAIL@example.com";
+export const contactEmail = "mailto:shsggusdpercussion@gmail.com";
 
 export const studentPhotos = [
   "Student Photo 1",

@@ -1,5 +1,12 @@
 ---
-import { studentPhotos } from "../data/siteData";
+const studentPhotos = [
+  "/student1.webp",
+  "/student2.webp",
+  "/student3.webp",
+  "/student4.webp",
+  "/student5.webp",
+  "/student6.webp",
+];
 ---
 
 <section class="hero">
@@ -40,14 +47,13 @@ import { studentPhotos } from "../data/siteData";
     <div class="photo-carousel">
       <div class="carousel-window">
         <div class="carousel-track">
-          {studentPhotos.map((photo) => (
+          {studentPhotos.map((photo, index) => (
             <div class="carousel-slide">
-              <div class="image-placeholder">
-                <div class="placeholder-content">
-                  <span class="placeholder-icon">＋</span>
-                  <span>{photo}</span>
-                </div>
-              </div>
+              <img
+                src={photo}
+                alt={`Student photo ${index + 1}`}
+                class="carousel-image"
+              />
             </div>
           ))}
         </div>
@@ -89,31 +95,57 @@ import { studentPhotos } from "../data/siteData";
       viewBox="0 0 1600 150"
       preserveAspectRatio="none"
     >
-      <!-- Back wave moves more dramatically -->
-      <path
-        class="wave-back"
-        d="M0 80
-           C180 120 330 125 500 86
-           C680 45 830 48 1000 84
-           C1170 120 1300 116 1440 72
-           C1500 58 1550 58 1600 70
-           L1600 150
-           L0 150
-           Z"
-      />
+      <g class="wave-layer wave-deep-layer">
+        <path
+          class="wave-deep"
+          d="M0 58
+             C180 104 350 102 520 62
+             C700 20 860 20 1040 62
+             C1220 104 1400 98 1600 48
+             L1600 150
+             L0 150
+             Z"
+        />
+      </g>
 
-      <!-- Front wave follows more slowly -->
-      <path
-        class="wave-front"
-        d="M0 96
-           C170 130 340 130 520 94
-           C700 58 830 55 1000 92
-           C1180 130 1300 126 1440 88
-           C1500 78 1550 78 1600 88
-           L1600 150
-           L0 150
-           Z"
-      />
+      <g class="wave-layer wave-back-layer">
+        <path
+          class="wave-back"
+          d="M0 76
+             C190 118 360 114 540 74
+             C720 34 860 35 1040 72
+             C1220 112 1400 106 1600 60
+             L1600 150
+             L0 150
+             Z"
+        />
+      </g>
+
+      <g class="wave-layer wave-mid-layer">
+        <path
+          class="wave-mid"
+          d="M0 92
+             C180 130 350 127 530 93
+             C710 58 860 58 1040 92
+             C1220 127 1400 120 1600 76
+             L1600 150
+             L0 150
+             Z"
+        />
+      </g>
+
+      <g class="wave-layer wave-front-layer">
+        <path
+          class="wave-front"
+          d="M0 108
+             C190 140 360 138 540 108
+             C720 78 860 76 1040 108
+             C1220 138 1400 132 1600 94
+             L1600 150
+             L0 150
+             Z"
+        />
+      </g>
     </svg>
   </div>
 </section>
@@ -122,23 +154,95 @@ import { studentPhotos } from "../data/siteData";
   const hero = document.querySelector<HTMLElement>(".hero");
 
   if (hero) {
+    const waveContainer = hero.querySelector<HTMLElement>(".hero-wave");
+    const deepLayer = hero.querySelector<SVGGElement>(".wave-deep-layer");
+    const backLayer = hero.querySelector<SVGGElement>(".wave-back-layer");
+    const midLayer = hero.querySelector<SVGGElement>(".wave-mid-layer");
+    const frontLayer = hero.querySelector<SVGGElement>(".wave-front-layer");
+
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     let ticking = false;
+    let animationFrame = 0;
+
+    let currentDeep = 0;
+    let currentBack = 0;
+    let currentMid = 0;
+    let currentFront = 0;
+    let currentReveal = 0;
+
+    let targetDeep = 0;
+    let targetBack = 0;
+    let targetMid = 0;
+    let targetFront = 0;
+    let targetReveal = 0;
+
+    const setLayerTransform = (layer: SVGGElement | null, x: number) => {
+      if (layer) {
+        layer.setAttribute("transform", `translate(${x.toFixed(2)} 0)`);
+      }
+    };
+
+    const animateWaves = () => {
+      const easing = 0.075;
+
+      currentDeep += (targetDeep - currentDeep) * easing;
+      currentBack += (targetBack - currentBack) * easing;
+      currentMid += (targetMid - currentMid) * easing;
+      currentFront += (targetFront - currentFront) * easing;
+      currentReveal += (targetReveal - currentReveal) * easing;
+
+      setLayerTransform(deepLayer, currentDeep);
+      setLayerTransform(backLayer, currentBack);
+      setLayerTransform(midLayer, currentMid);
+      setLayerTransform(frontLayer, currentFront);
+
+      if (waveContainer) {
+        const waveHeight = waveContainer.getBoundingClientRect().height;
+        const reveal = Math.max(0, waveHeight - currentReveal);
+
+        waveContainer.style.setProperty(
+          "--wave-reveal-offset",
+          `${reveal}px`
+        );
+      }
+
+      const stillMoving =
+        Math.abs(targetDeep - currentDeep) > 0.05 ||
+        Math.abs(targetBack - currentBack) > 0.05 ||
+        Math.abs(targetMid - currentMid) > 0.05 ||
+        Math.abs(targetFront - currentFront) > 0.05 ||
+        Math.abs(targetReveal - currentReveal) > 0.05;
+
+      if (stillMoving) {
+        animationFrame = window.requestAnimationFrame(animateWaves);
+      } else {
+        animationFrame = 0;
+      }
+    };
 
     const updateWaves = () => {
       const scrollY = window.scrollY;
+      const waveHeight = waveContainer?.getBoundingClientRect().height ?? 150;
 
-      const backOffset = Math.sin(scrollY * 0.006) * 45;
-      const frontOffset = Math.sin(scrollY * 0.0045 + 0.8) * 22;
+      targetReveal = Math.min(scrollY, waveHeight);
 
-      hero.style.setProperty(
-        "--wave-back-offset",
-        `${backOffset}px`
-      );
+      if (!reduceMotion) {
+        const motion = scrollY * 0.0012;
 
-      hero.style.setProperty(
-        "--wave-front-offset",
-        `${frontOffset}px`
-      );
+        targetDeep = Math.sin(motion) * 52;
+        targetBack = Math.sin(motion + 0.65) * 40;
+        targetMid = Math.sin(motion + 1.25) * 28;
+        targetFront = Math.sin(motion + 1.8) * 18;
+      } else {
+        targetDeep = 0;
+        targetBack = 0;
+        targetMid = 0;
+        targetFront = 0;
+      }
+
+      if (!animationFrame) {
+        animationFrame = window.requestAnimationFrame(animateWaves);
+      }
 
       ticking = false;
     };
@@ -154,6 +258,12 @@ import { studentPhotos } from "../data/siteData";
 
     window.addEventListener("scroll", handleScroll, {
       passive: true
+    });
+
+    window.addEventListener("beforeunload", () => {
+      if (animationFrame) {
+        window.cancelAnimationFrame(animationFrame);
+      }
     });
   }
 </script>

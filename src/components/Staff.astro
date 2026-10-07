@@ -15,20 +15,14 @@ import { staff } from "../data/siteData";
     </div>
 
     <div class="staff-grid">
-      {staff.map((member) => (
+      {staff.map((member, index) => (
         <article class="staff-card">
           <div class="staff-image">
-            <div class="image-placeholder">
-              <div class="placeholder-content">
-                <span class="placeholder-icon">
-                  ＋
-                </span>
-
-                <span>
-                  Staff Photo
-                </span>
-              </div>
-            </div>
+            <img
+              src={`/staff${index + 1}.png`}
+              alt={`${member.name} staff photo`}
+              class="staff-photo"
+            />
           </div>
 
           <div class="staff-info">
