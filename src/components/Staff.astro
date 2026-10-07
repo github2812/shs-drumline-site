@@ -1,0 +1,51 @@
+---
+import { staff } from "../data/siteData";
+---
+
+<section id="staff" class="section staff-section">
+  <div class="section-container">
+    <div class="section-heading">
+      <h2>
+        Staff
+      </h2>
+
+      <p>
+        DESCRIPTION
+      </p>
+    </div>
+
+    <div class="staff-grid">
+      {staff.map((member) => (
+        <article class="staff-card">
+          <div class="staff-image">
+            <div class="image-placeholder">
+              <div class="placeholder-content">
+                <span class="placeholder-icon">
+                  ＋
+                </span>
+
+                <span>
+                  Staff Photo
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="staff-info">
+            <p class="staff-role">
+              {member.role}
+            </p>
+
+            <h3>
+              {member.name}
+            </h3>
+
+            <p class="staff-description">
+              {member.desc}
+            </p>
+          </div>
+        </article>
+      ))}
+    </div>
+  </div>
+</section>

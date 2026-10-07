@@ -1,0 +1,73 @@
+---
+import {
+  donationUrl,
+  fundraisingVideoUrl,
+} from "../data/siteData";
+---
+
+<section id="donate" class="section donate-section">
+  <div class="section-container donate-layout">
+    <div class="video-card">
+      <a
+        href={fundraisingVideoUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="video-link"
+      >
+        <div class="video-placeholder">
+          <div class="placeholder-content">
+            <span class="placeholder-icon">
+              ▶
+            </span>
+
+            <span>
+              Fundraising Video
+            </span>
+          </div>
+        </div>
+
+        <div class="video-play">
+          ▶
+        </div>
+      </a>
+    </div>
+
+    <div class="donate-text">
+      <h2>
+        Donate
+      </h2>
+
+      <p>
+        DESCRIPTION
+      </p>
+
+      <a
+        href={donationUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        class="gold-button"
+      >
+        Donate
+      </a>
+    </div>
+  </div>
+
+  <div class="wave donate-wave">
+    <svg
+      viewBox="0 0 1440 150"
+      preserveAspectRatio="none"
+      aria-hidden="true"
+    >
+    <path
+    class="wave-front"
+    d="M0 72
+       C180 115 330 115 500 78
+       C680 40 820 40 980 78
+       C1160 118 1290 112 1440 68
+       L1440 150
+       L0 150
+       Z"
+  />
+    </svg>
+  </div>
+</section>

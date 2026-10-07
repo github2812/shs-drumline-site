@@ -1,12 +1,56 @@
 ---
+import Navbar from "../components/Navbar.astro";
+import Hero from "../components/Hero.astro";
+import Donate from "../components/Donate.astro";
+import Students from "../components/Students.astro";
+import Staff from "../components/Staff.astro";
+import Footer from "../components/Footer.astro";
+
+import "../styles/global.css";
 ---
+
+<!doctype html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0"
+    />
+
     <title>Santiago High School Indoor Drumline</title>
+
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fredoka:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
   </head>
+
   <body>
-    <h1>Santiago High School Indoor Drumline</h1>
+    <Navbar />
+
+    <main>
+      <Hero />
+      <Donate />
+      <Students />
+      <Staff />
+    </main>
+
+    <Footer />
   </body>
 </html>
+
+<script>
+  import "../scripts/carousel";
+</script>

@@ -1,0 +1,159 @@
+---
+import { studentPhotos } from "../data/siteData";
+---
+
+<section class="hero">
+  <!-- Background decoration -->
+  <div class="hero-glow hero-glow-one"></div>
+  <div class="hero-glow hero-glow-two"></div>
+
+  <div class="hero-circle hero-circle-one"></div>
+  <div class="hero-circle hero-circle-two"></div>
+  <div class="hero-circle hero-circle-three"></div>
+
+  <!-- Subtle drum silhouette -->
+  <div class="hero-drum" aria-hidden="true">
+    <div class="drum-shell">
+      <div class="drum-head"></div>
+      <div class="drum-rim"></div>
+      <div class="drum-lug lug-one"></div>
+      <div class="drum-lug lug-two"></div>
+      <div class="drum-lug lug-three"></div>
+      <div class="drum-lug lug-four"></div>
+      <div class="drum-lug lug-five"></div>
+      <div class="drum-lug lug-six"></div>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-text">
+      <p class="eyebrow">
+        Santiago High School
+      </p>
+
+      <h1>
+        Indoor
+        <span>Drumline</span>
+      </h1>
+    </div>
+
+    <div class="photo-carousel">
+      <div class="carousel-window">
+        <div class="carousel-track">
+          {studentPhotos.map((photo) => (
+            <div class="carousel-slide">
+              <div class="image-placeholder">
+                <div class="placeholder-content">
+                  <span class="placeholder-icon">＋</span>
+                  <span>{photo}</span>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div class="carousel-controls">
+        <button
+          class="carousel-arrow"
+          id="previous"
+          aria-label="Previous photo"
+        >
+          ←
+        </button>
+
+        <div class="carousel-dots">
+          {studentPhotos.map((_, index) => (
+            <button
+              class:list={["carousel-dot", { active: index === 0 }]}
+              data-slide={index}
+              aria-label={`Go to photo ${index + 1}`}
+            ></button>
+          ))}
+        </div>
+
+        <button
+          class="carousel-arrow"
+          id="next"
+          aria-label="Next photo"
+        >
+          →
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero wave transition -->
+  <div class="wave hero-wave" aria-hidden="true">
+    <svg
+      viewBox="0 0 1600 150"
+      preserveAspectRatio="none"
+    >
+      <!-- Back wave moves more dramatically -->
+      <path
+        class="wave-back"
+        d="M0 80
+           C180 120 330 125 500 86
+           C680 45 830 48 1000 84
+           C1170 120 1300 116 1440 72
+           C1500 58 1550 58 1600 70
+           L1600 150
+           L0 150
+           Z"
+      />
+
+      <!-- Front wave follows more slowly -->
+      <path
+        class="wave-front"
+        d="M0 96
+           C170 130 340 130 520 94
+           C700 58 830 55 1000 92
+           C1180 130 1300 126 1440 88
+           C1500 78 1550 78 1600 88
+           L1600 150
+           L0 150
+           Z"
+      />
+    </svg>
+  </div>
+</section>
+
+<script>
+  const hero = document.querySelector<HTMLElement>(".hero");
+
+  if (hero) {
+    let ticking = false;
+
+    const updateWaves = () => {
+      const scrollY = window.scrollY;
+
+      const backOffset = Math.sin(scrollY * 0.006) * 45;
+      const frontOffset = Math.sin(scrollY * 0.0045 + 0.8) * 22;
+
+      hero.style.setProperty(
+        "--wave-back-offset",
+        `${backOffset}px`
+      );
+
+      hero.style.setProperty(
+        "--wave-front-offset",
+        `${frontOffset}px`
+      );
+
+      ticking = false;
+    };
+
+    const handleScroll = () => {
+      if (!ticking) {
+        window.requestAnimationFrame(updateWaves);
+        ticking = true;
+      }
+    };
+
+    updateWaves();
+
+    window.addEventListener("scroll", handleScroll, {
+      passive: true
+    });
+  }
+</script>
